@@ -1,4 +1,19 @@
-Photon by HTML5 UP
+This sample website shows how you can start the OAuth login flow into a WebDirect file, right from your own web site.
+Without taking the user to the WebDirect launch center or the WebDirect file's login screen.
+
+See this blog post for how it works:
+<>
+
+This functionality already exists for logging in with regular FileMaker accounts, see this resource:
+https://github.com/bharlow/fm-webdirect-custom
+
+Enjoy!
+
+Wim Decorte
+Soliant Consulting Inc.
+
+
+--- website provided by Photon by HTML5 UP
 html5up.net | @ajlkn
 Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 
