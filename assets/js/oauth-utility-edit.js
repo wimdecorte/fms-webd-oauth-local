@@ -1,6 +1,6 @@
 function getProviderInfo(callback) {
 	var xhr = new XMLHttpRequest();
-	xhr.onreadystatechange = function() {
+	xhr.onreadystatechange = function () {
 		if (xhr.readyState == 4) {
 			var providerInfo = null;
 			if (xhr.status == 200 && xhr.responseText != null && xhr.responseText != '') {
@@ -21,7 +21,7 @@ function getProviderInfo(callback) {
 function getOAuthURL(trackingId, masterAddr, provider, callback) {
 	var xhr, queryStr;
 	xhr = new XMLHttpRequest();
-	xhr.onreadystatechange = function() {
+	xhr.onreadystatechange = function () {
 		if (xhr.readyState == 4 && xhr.status == 200) {
 			if (callback) {
 				callback(xhr.responseText, xhr.getResponseHeader('X-FMS-Request-ID'));
@@ -39,7 +39,7 @@ function getOAuthURL(trackingId, masterAddr, provider, callback) {
 function doOAuthLogin(dbName, requestId, identifier, homeurl, autherr) {
 	var form, node, queryStr;
 	var server = 'https://mbp2013.ets.fm';
-	
+
 	form = document.createElement('form');
 	form.style.display = 'none';
 	form.action = '/fmi/webd/' + encodeURIComponent(dbName);
@@ -51,13 +51,13 @@ function doOAuthLogin(dbName, requestId, identifier, homeurl, autherr) {
 	node.name = 'user';
 	node.value = requestId;
 	form.appendChild(node.cloneNode());
-	
+
 	node = document.createElement('input');
 	node.type = 'text';
 	node.name = 'pwd';
 	node.value = identifier;
 	form.appendChild(node.cloneNode());
-	
+
 	queryStr = 'lgcnt=1&oauth=1';
 	if (homeurl != '') {
 		queryStr += ('&homeurl=' + homeurl);
@@ -65,11 +65,11 @@ function doOAuthLogin(dbName, requestId, identifier, homeurl, autherr) {
 	if (autherr != '') {
 		queryStr += ('&autherr=' + autherr);
 	}
-	
+
 	if (queryStr != '') {
 		form.action += ('?' + queryStr);
 	}
-	
+
 	document.body.appendChild(form);
 	form.submit();
 	document.body.removeChild(form);
