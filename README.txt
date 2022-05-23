@@ -1,8 +1,11 @@
 This sample website shows how you can start the OAuth login flow into a WebDirect file, right from your own web site.
 Without taking the user to the WebDirect launch center or the WebDirect file's login screen.
 
+This version is when the website itself runs through FileMaker Server's web server.  all references in the code are local to the FileMaker Server machine.
+If you have a web site that runs on another server, see this repo: <TBD>
+
 See this blog post for how it works:
-<>
+<TBD>
 
 This functionality already exists for logging in with regular FileMaker accounts, see this resource:
 https://github.com/bharlow/fm-webdirect-custom
