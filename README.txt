@@ -2,7 +2,7 @@ This sample website shows how you can start the OAuth login flow into a WebDirec
 Without taking the user to the WebDirect launch center or the WebDirect file's login screen.
 
 This version is when the website itself runs through FileMaker Server's web server.  all references in the code are local to the FileMaker Server machine.
-If you have a web site that runs on another server, see this repo: <TBD>
+If you have a web site that runs on another server, see this repo: https://github.com/wimdecorte/fms-webd-oauth-remote
 
 See this blog post for how it works:
 <TBD>
