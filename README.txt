@@ -5,7 +5,7 @@ This version is when the website itself runs through FileMaker Server's web serv
 If you have a web site that runs on another server, see this repo: https://github.com/wimdecorte/fms-webd-oauth-remote
 
 See this blog post for how it works:
-<TBD>
+https://www.soliantconsulting.com/blog/filemaker-custom-oauth-login-webdirect/
 
 This functionality already exists for logging in with regular FileMaker accounts, see this resource:
 https://github.com/bharlow/fm-webdirect-custom
