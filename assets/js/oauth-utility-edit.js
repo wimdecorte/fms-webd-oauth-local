@@ -18,6 +18,13 @@ function getProviderInfo(callback) {
 	xhr.send();
 }
 
+function getOAuthReturnUrl(masterAddr) {
+	if (typeof OAUTH_CONFIG !== 'undefined' && OAUTH_CONFIG.useFullPageRedirect) {
+		return window.location.href.split('#')[0];
+	}
+	return 'https://' + masterAddr + '/fmi/webd/oauth-landing.html';
+}
+
 function getOAuthURL(trackingId, masterAddr, provider, callback) {
 	var xhr, queryStr;
 	xhr = new XMLHttpRequest();
@@ -36,7 +43,7 @@ function getOAuthURL(trackingId, masterAddr, provider, callback) {
 	xhr.open('GET', '/fmi/webd/oauthapi/getoauthurl?' + queryStr, true);
 	xhr.setRequestHeader('X-FMS-Application-Type', '8');
 	// xhr.setRequestHeader('X-FMS-Application-Version', '17');
-	xhr.setRequestHeader('X-FMS-Return-URL', "https://" + masterAddr + '/fmi/webd/oauth-landing.html');
+	xhr.setRequestHeader('X-FMS-Return-URL', getOAuthReturnUrl(masterAddr));
 	xhr.send();
 }
 

@@ -10,6 +10,34 @@ https://www.soliantconsulting.com/blog/filemaker-custom-oauth-login-webdirect/
 This functionality already exists for logging in with regular FileMaker accounts, see this resource:
 https://github.com/bharlow/fm-webdirect-custom
 
+Feature flags (oauth-config.js)
+-------------------------------
+This demo is static HTML and JavaScript served by FileMaker Server. A .env file is not
+used: nothing in the browser reads it unless you add a separate build step to inject
+values at deploy time. Instead, edit assets/js/oauth-config.js (see
+assets/js/oauth-config.example.js).
+
+  autoStartOAuth (index.html only)
+    When true, OAuth starts automatically after the server returns provider info.
+    The Member Login button is still shown so users can retry manually.
+
+  useFullPageRedirect
+    When false (default), the IdP opens in a popup and the parent page listens for a
+    storage event from oauth-landing.html (popup flow).
+
+    When true, the current page redirects to the IdP. X-FMS-Return-URL is set to this
+    page's URL so the user can land here again after authentication. On load, the page
+    reads localStorage (oauth-response) and sessionStorage (pending tracking/request IDs)
+    to finish the flow—no popup and no cross-window storage event.
+
+    Full-page mode requires the OAuth callback to leave oauth-response in localStorage
+    before the user returns to this page. If your server only writes that key on
+    oauth-landing.html, customize that page to redirect back to your demo URL, or confirm
+    that FileMaker Server accepts your page as the return URL.
+
+  identityProvider
+    Provider name sent to getOAuthURL (default Keycloak for this sample).
+
 Security note (identifier.html)
 -------------------------------
 identifier.html uses window.postMessage with targetOrigin "*" so any opener can receive
