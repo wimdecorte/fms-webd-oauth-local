@@ -22,18 +22,22 @@ assets/js/oauth-config.example.js).
     The Member Login button is still shown so users can retry manually.
 
   useFullPageRedirect
-    When false (default), the IdP opens in a popup and the parent page listens for a
-    storage event from oauth-landing.html (popup flow).
+    Same OAuth as the popup flow: getOAuthURL on FileMaker Server, user signs in at the
+    identity provider, FileMaker Server completes the handshake. The IdP never calls your
+    demo HTML; only FileMaker Server does, via the URL sent in X-FMS-Return-URL on
+    getOAuthURL (see assets/js/oauth-utility-edit.js).
 
-    When true, the current page redirects to the IdP. X-FMS-Return-URL is set to this
-    page's URL so the user can land here again after authentication. On load, the page
-    reads localStorage (oauth-response) and sessionStorage (pending tracking/request IDs)
-    to finish the flow—no popup and no cross-window storage event.
+    false (default): This page stays open. A popup goes to the IdP. X-FMS-Return-URL is
+    /fmi/webd/oauth-landing.html (Claris default). That page runs in the popup, writes
+    oauth-response to localStorage, and this page hears the storage event in the other
+    window.
 
-    Full-page mode requires the OAuth callback to leave oauth-response in localStorage
-    before the user returns to this page. If your server only writes that key on
-    oauth-landing.html, customize that page to redirect back to your demo URL, or confirm
-    that FileMaker Server accepts your page as the return URL.
+    true: This tab goes to the IdP (no popup). X-FMS-Return-URL is this page's URL instead
+    of oauth-landing.html so FileMaker Server sends the user back here when finished—the
+    same header, different value. On load, resumeOAuthAfterRedirect reads oauth-response
+    from localStorage (and sessionStorage for the request ID saved before redirect). That
+    read replaces the storage listener: the storage event only fires in other windows, which
+    is why the popup used oauth-landing in a separate window.
 
   identityProvider
     Provider name sent to getOAuthURL (default Keycloak for this sample).
