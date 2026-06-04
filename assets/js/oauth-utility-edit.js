@@ -22,9 +22,13 @@ function getOAuthURL(trackingId, masterAddr, provider, callback) {
 	var xhr, queryStr;
 	xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function () {
-		if (xhr.readyState == 4 && xhr.status == 200) {
+		if (xhr.readyState == 4) {
 			if (callback) {
-				callback(xhr.responseText, xhr.getResponseHeader('X-FMS-Request-ID'));
+				if (xhr.status == 200 && xhr.responseText != null && xhr.responseText != '') {
+					callback(xhr.responseText, xhr.getResponseHeader('X-FMS-Request-ID'));
+				} else {
+					callback(null, null);
+				}
 			}
 		}
 	};
@@ -38,7 +42,6 @@ function getOAuthURL(trackingId, masterAddr, provider, callback) {
 
 function doOAuthLogin(dbName, requestId, identifier, homeurl, autherr) {
 	var form, node, queryStr;
-	var server = 'https://mbp2013.ets.fm';
 
 	form = document.createElement('form');
 	form.style.display = 'none';

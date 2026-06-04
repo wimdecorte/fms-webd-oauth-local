@@ -10,6 +10,17 @@ https://www.soliantconsulting.com/blog/filemaker-custom-oauth-login-webdirect/
 This functionality already exists for logging in with regular FileMaker accounts, see this resource:
 https://github.com/bharlow/fm-webdirect-custom
 
+Security note (identifier.html)
+-------------------------------
+identifier.html uses window.postMessage with targetOrigin "*" so any opener can receive
+the OAuth identifier and request ID. That is intentional for this demo and for the
+companion remote-site sample (no hardcoded marketing-site URL).
+
+For production, replace "*" with your parent page's exact origin (e.g.
+https://www.example.com) on both postMessage calls in identifier.html, and on the
+parent page validate event.origin before using event.data. index.html does not use
+postMessage; it completes login on the same host via doOAuthLogin.
+
 Enjoy!
 
 Wim Decorte

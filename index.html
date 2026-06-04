@@ -44,6 +44,13 @@
 			let master = window.location.hostname;
 
 			getOAuthURL(trackingId, master, providerName, function (oauthUrl, requestId) {
+				if (!oauthUrl) {
+					alert('Could not start OAuth login. Check FileMaker Server OAuth configuration and try again.');
+					if (child && !child.closed) {
+						child.close();
+					}
+					return;
+				}
 				// alert("url = " + oauthUrl + ", address = " + master + " - v4");
 				child.location.replace(oauthUrl);
 
@@ -57,7 +64,7 @@
 
 					// Compare tracking ID against returned one to make sure
 					// this is the correct response to process
-					if (trackingId = retTrackingId) {
+					if (trackingId === retTrackingId) {
 						window.removeEventListener("storage", processOAuthResponse);
 						localStorage.removeItem('oauth-response');
 						doOAuthLogin(dbName, requestId, getOAuthResponseParameter(response, 'identifier'), 'https://' + master, getOAuthResponseParameter(response, 'error'));
