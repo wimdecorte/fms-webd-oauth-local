@@ -1,8 +1,6 @@
-var dbName = 'OAuth_tester';
-
 function completeIndexOAuth(identifier, autherr, requestId) {
 	doOAuthLogin(
-		dbName,
+		OAUTH_CONFIG.dbName,
 		requestId,
 		identifier,
 		'https://' + window.location.hostname,

@@ -31,6 +31,33 @@ function clearOAuthSessionState() {
 	sessionStorage.removeItem(OAUTH_SESSION_REQUEST);
 }
 
+function getOAuthResponseFromLocation() {
+	var search, params;
+
+	if (!useFullPageRedirect()) {
+		return null;
+	}
+
+	search = window.location.search;
+	if (!search || search.length < 2) {
+		return null;
+	}
+
+	params = search.substring(1);
+	if (getOAuthResponseParameter(params, 'trackingID') && getOAuthResponseParameter(params, 'identifier')) {
+		return params;
+	}
+
+	return null;
+}
+
+function stripOAuthParamsFromUrl() {
+	if (!window.history || !window.history.replaceState) {
+		return;
+	}
+	window.history.replaceState(null, '', window.location.pathname + window.location.hash);
+}
+
 function saveOAuthSessionState(trackingId, requestId) {
 	sessionStorage.setItem(OAUTH_SESSION_PENDING, '1');
 	sessionStorage.setItem(OAUTH_SESSION_TRACKING, trackingId);
@@ -58,23 +85,33 @@ function tryCompleteOAuthResponse(response, trackingId, requestId, onComplete) {
 }
 
 function resumeOAuthAfterRedirect(onComplete) {
-	var trackingId, requestId;
+	var trackingId, requestId, response;
 
 	if (!useFullPageRedirect() || !onComplete) {
 		return false;
 	}
-	if (sessionStorage.getItem(OAUTH_SESSION_PENDING) !== '1') {
+
+	response = localStorage.getItem(OAUTH_STORAGE_KEY) || getOAuthResponseFromLocation();
+	if (!response) {
+		return false;
+	}
+
+	requestId = sessionStorage.getItem(OAUTH_SESSION_REQUEST);
+	if (!requestId) {
 		return false;
 	}
 
 	trackingId = sessionStorage.getItem(OAUTH_SESSION_TRACKING);
-	requestId = sessionStorage.getItem(OAUTH_SESSION_REQUEST);
-	return tryCompleteOAuthResponse(
-		localStorage.getItem(OAUTH_STORAGE_KEY),
-		trackingId,
-		requestId,
-		onComplete
-	);
+	if (!trackingId) {
+		trackingId = getOAuthResponseParameter(response, 'trackingID');
+	}
+
+	if (tryCompleteOAuthResponse(response, trackingId, requestId, onComplete)) {
+		stripOAuthParamsFromUrl();
+		return true;
+	}
+
+	return false;
 }
 
 function listenForOAuthPopupResponse(trackingId, requestId, onComplete) {

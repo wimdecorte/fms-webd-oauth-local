@@ -17,6 +17,9 @@ used: nothing in the browser reads it unless you add a separate build step to in
 values at deploy time. Instead, edit assets/js/oauth-config.js (see
 assets/js/oauth-config.example.js).
 
+  dbName (index.html only)
+    Published WebDirect file name to open after OAuth (no .fmp12 extension).
+
   autoStartOAuth (index.html only)
     When true, OAuth starts automatically after the server returns provider info.
     The Member Login button is still shown so users can retry manually.
@@ -34,10 +37,11 @@ assets/js/oauth-config.example.js).
 
     true: This tab goes to the IdP (no popup). X-FMS-Return-URL is this page's URL instead
     of oauth-landing.html so FileMaker Server sends the user back here when finished—the
-    same header, different value. On load, resumeOAuthAfterRedirect reads oauth-response
-    from localStorage (and sessionStorage for the request ID saved before redirect). That
-    read replaces the storage listener: the storage event only fires in other windows, which
-    is why the popup used oauth-landing in a separate window.
+    same header, different value. On load, resumeOAuthAfterRedirect reads the result from
+    the query string (trackingID, identifier, error, etc.) and the request ID from
+    sessionStorage (saved before redirect). That replaces the popup's storage listener:
+    popup mode uses oauth-landing.html in another window to write localStorage; full-page
+    mode returns the same fields on this page's URL.
 
   identityProvider
     Provider name sent to getOAuthURL (default Keycloak for this sample).
